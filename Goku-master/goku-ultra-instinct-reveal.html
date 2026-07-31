@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dragon Ball — Ultra Instinct Reveal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Luckiest+Guy&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; background:#04060c; overflow:hidden; }
+  .hero { position:relative; width:100vw; height:100vh; overflow:hidden; cursor:none; }
+  .hero::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px; z-index:20;
+    background:linear-gradient(90deg, transparent, #FF8C1A, #2E62D9, #C9D6E8, transparent);
+  }
+  .hero-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; z-index:0; }
+  .content { position:absolute; inset:0; z-index:10; pointer-events:none; }
+
+  .logo {
+    position:absolute; top:34px; left:50%; transform:translateX(-50%); z-index:15;
+    text-align:center; pointer-events:none;
+  }
+  .logo .op {
+    font-family:'Luckiest Guy', cursive; font-size:64px; line-height:0.9;
+    letter-spacing:0.02em; text-transform:uppercase;
+    color:#FF9E2C;
+    -webkit-text-stroke:3px #12244a;
+    text-shadow:
+      0 4px 0 #b33a00,
+      0 6px 0 #12244a,
+      0 0 24px rgba(255,140,26,0.45);
+  }
+  .logo .tag {
+    margin-top:2px; font-family:'Bebas Neue',sans-serif; font-size:15px;
+    letter-spacing:0.5em; color:#fff; text-shadow:0 0 8px rgba(0,0,0,0.8);
+    padding-left:0.5em;
+  }
+
+  .left {
+    position:absolute; bottom:64px; left:64px; width:360px;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .right {
+    position:absolute; top:54%; right:64px; transform:translateY(-50%);
+    width:380px; text-align:right; display:flex; flex-direction:column; gap:14px; align-items:flex-end;
+  }
+  .eyebrow {
+    font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:0.35em;
+    text-transform:uppercase; color:#FF8C1A; padding-left:1.4rem; position:relative;
+  }
+  .eyebrow::before {
+    content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:1rem; height:1.5px; background:#FF8C1A;
+  }
+  .right .eyebrow { color:#9fc2ff; padding:0 1.4rem 0 0; }
+  .right .eyebrow::before { left:auto; right:0; background:#9fc2ff; }
+
+  .title {
+    font-family:'Bangers', cursive; font-size:78px; line-height:0.92; color:#fff;
+    text-transform:uppercase; letter-spacing:0.02em;
+    text-shadow:3px 3px 0 #b33a00, 0 0 14px rgba(255,140,26,0.5), 0 0 36px rgba(255,140,26,0.3);
+  }
+  .right .title {
+    font-size:62px; color:#fff;
+    text-shadow:3px 3px 0 #2E62D9, 0 0 16px rgba(160,200,255,0.55), 0 0 40px rgba(160,200,255,0.35);
+  }
+  .desc {
+    font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-size:19px;
+    line-height:1.6; color:rgba(255,255,255,0.82);
+  }
+  .btn {
+    font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:0.2em; text-transform:uppercase;
+    padding:14px 28px; background:transparent; color:#fff; border:2px solid #FF8C1A;
+    cursor:pointer; align-self:flex-start; position:relative; overflow:hidden; isolation:isolate;
+    clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); pointer-events:all;
+    transition:border-color .3s, color .3s;
+  }
+  .btn::after {
+    content:''; position:absolute; inset:0; background:#FF8C1A;
+    transform:translateX(-105%) skewX(-8deg); transition:transform .38s cubic-bezier(.4,0,.2,1); z-index:-1;
+  }
+  .btn:hover { border-color:#ffb45e; color:#1a0a00; }
+  .btn:hover::after { transform:translateX(0) skewX(-8deg); }
+
+  .hint {
+    position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:16;
+    font-family:'Bebas Neue',sans-serif; letter-spacing:0.25em; font-size:14px; color:#fff;
+    background:rgba(0,0,0,0.45); padding:8px 18px; border-radius:999px; pointer-events:none;
+    transition:opacity .5s;
+  }
+  @media (max-width:680px){
+    .logo .op{font-size:38px;} .logo .tag{font-size:11px; letter-spacing:0.3em;}
+    .left{left:22px; bottom:34px; width:62%;} .right{right:22px; width:58%;}
+    .title{font-size:42px;} .right .title{font-size:34px;} .desc{font-size:15px;}
+    .btn{font-size:14px; padding:11px 18px;}
+  }
+</style>
+</head>
+<body>
+<div class="hero" id="hero">
+  <canvas class="hero-canvas" id="cv"></canvas>
+
+  <div class="logo">
+    <div class="op">Goku</div>
+    <div class="tag">ULTRA&nbsp;&nbsp;INSTINCT &nbsp;&middot;&nbsp; MASTERED</div>
+  </div>
+
+  <div class="content">
+    <div class="left">
+      <span class="eyebrow">Saiyan Raised on Earth</span>
+      <h1 class="title">SON<br>GOKU</h1>
+      <p class="desc">A pure heart, an endless appetite, and a hunger for the next great fight &mdash; the low-class warrior who keeps breaking every limit put in front of him.</p>
+      <button class="btn">Power Up</button>
+    </div>
+    <div class="right">
+      <span class="eyebrow">Beyond the Gods</span>
+      <h1 class="title">ULTRA<br>INSTINCT</h1>
+      <p class="desc">Mastered. Mind silent, body moving on its own &mdash; silver-haired serenity where every strike and dodge happens before thought.</p>
+    </div>
+  </div>
+
+  <div class="hint" id="hint">&#9656; MOVE ACROSS TO TRANSFORM &#9666;</div>
+</div>
+
+<script>
+(function(){
+  const hero=document.getElementById('hero');
+  const canvas=document.getElementById('cv');
+  const ctx=canvas.getContext('2d');
+  const hint=document.getElementById('hint');
+  const DPR=Math.min(window.devicePixelRatio||1,2);
+
+  const TRAIL_LENGTH=60;
+  let HEAD_RADIUS=190;
+  const OVERLAY='rgba(0,0,0,0.42)';
+
+  const mouse={x:-9999,y:-9999};
+  const smooth={x:-9999,y:-9999};
+  let trail=[];
+
+  const bottom=new Image(); // base layer, always visible
+  const top=new Image();    // revealed under the cursor trail
+
+  // PLACEHOLDERS — drop your images next to this file:
+  // 2.jpg = Mastered Ultra Instinct Goku (bottom / always visible)
+  // 1.jpg = Base form Goku (top / revealed on hover)
+  bottom.src='2.jpg';
+  top.src='1.jpg';
+
+  const off=document.createElement('canvas');
+  const offc=off.getContext('2d');
+
+  function cover(img,cw,ch){
+    const ir=img.width/img.height, cr=cw/ch;
+    let w,h,x,y;
+    if(ir>cr){ h=ch; w=ch*ir; x=(cw-w)/2; y=0; }
+    else { w=cw; h=cw/ir; x=0; y=(ch-h)/2; }
+    return [x,y,w,h];
+  }
+
+  function resize(){
+    const w=hero.offsetWidth,h=hero.offsetHeight;
+    canvas.width=w*DPR; canvas.height=h*DPR;
+    off.width=w*DPR; off.height=h*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    offc.setTransform(DPR,0,0,DPR,0,0);
+    HEAD_RADIUS=Math.max(200,Math.min(w,h)*0.40);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  hero.addEventListener('mousemove',function(e){
+    const r=hero.getBoundingClientRect();
+    mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
+    hint.style.opacity=0;
+  });
+  hero.addEventListener('touchmove',function(e){
+    const r=hero.getBoundingClientRect(); const t=e.touches[0];
+    mouse.x=t.clientX-r.left; mouse.y=t.clientY-r.top;
+    hint.style.opacity=0;
+  },{passive:true});
+
+  function draw(){
+    const w=hero.offsetWidth,h=hero.offsetHeight;
+    smooth.x+=(mouse.x-smooth.x)*0.13;
+    smooth.y+=(mouse.y-smooth.y)*0.13;
+
+    trail.unshift({x:smooth.x,y:smooth.y});
+    if(trail.length>TRAIL_LENGTH) trail.length=TRAIL_LENGTH;
+
+    ctx.clearRect(0,0,w,h);
+    const cb=cover(bottom,w,h);
+    ctx.drawImage(bottom,cb[0],cb[1],cb[2],cb[3]);
+    ctx.fillStyle=OVERLAY;
+    ctx.fillRect(0,0,w,h);
+
+    offc.clearRect(0,0,w,h);
+    offc.globalCompositeOperation='source-over';
+    for(let i=0;i<trail.length;i++){
+      const t=1-i/trail.length;
+      const r=HEAD_RADIUS*(0.25+0.75*t);
+      const alpha=Math.pow(t,1.5);
+      offc.beginPath();
+      offc.arc(trail[i].x,trail[i].y,r,0,Math.PI*2);
+      offc.fillStyle='rgba(0,0,0,'+alpha+')';
+      offc.fill();
+    }
+    offc.globalCompositeOperation='source-in';
+    const ct=cover(top,w,h);
+    offc.drawImage(top,ct[0],ct[1],ct[2],ct[3]);
+    offc.globalCompositeOperation='source-atop';
+    offc.fillStyle=OVERLAY;
+    offc.fillRect(0,0,w,h);
+
+    ctx.drawImage(off,0,0,w,h);
+
+    if(trail.length){
+      const head=trail[0];
+      const glow=ctx.createRadialGradient(head.x,head.y,0,head.x,head.y,HEAD_RADIUS*1.45);
+      glow.addColorStop(0,'rgba(220,235,255,0.30)');
+      glow.addColorStop(0.45,'rgba(150,190,255,0.14)');
+      glow.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.arc(head.x,head.y,HEAD_RADIUS*1.45,0,Math.PI*2);
+      ctx.fillStyle=glow; ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  let loaded=0;
+  const onLoad=function(){ if(++loaded===2) draw(); };
+  bottom.onload=onLoad; top.onload=onLoad;
+})();
+</script>
+</body>
+</html>
